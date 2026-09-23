@@ -271,7 +271,13 @@ export function DoctorProfileScreen({ doctor }: DoctorProfileScreenProps) {
       </section>
 
       <div className="fixed inset-x-0 bottom-0 z-[60] border-t border-black/5 bg-[var(--ptm-card)]/95 backdrop-blur-sm">
-        <div className="mx-auto max-w-md px-4 py-4">
+        <div className="mx-auto flex max-w-md flex-col gap-2 px-4 py-4">
+          <Link
+            href={`/parent/assistant?doctor=${doctor.handle}`}
+            className="flex w-full items-center justify-center rounded-2xl border border-[var(--ptm-accent)]/30 bg-[var(--ptm-bg)] py-3 text-sm font-bold text-[var(--ptm-accent)]"
+          >
+            {t.parent.aiAssistant.askBeforeBook}
+          </Link>
           <Link
             href="/parent/messages"
             className="flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-[var(--ptm-accent)] to-[var(--ptm-accent-dark)] py-3.5 text-base font-bold text-white shadow-[0_8px_24px_rgba(47,107,255,0.35)]"

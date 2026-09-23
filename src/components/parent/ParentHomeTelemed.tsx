@@ -7,6 +7,7 @@ import {
   LayoutGrid,
   ScanLine,
   Stethoscope,
+  Sparkles,
   Video,
   type LucideIcon,
 } from "lucide-react";
@@ -24,6 +25,7 @@ import { getSpecialtyLabel } from "@/lib/doctors/specialties";
 
 export function ParentHomeTelemed() {
   const { t, locale } = useI18n();
+  const p = t.parent;
   const tm = t.telemed;
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -57,6 +59,22 @@ export function ParentHomeTelemed() {
 
   return (
     <div className="flex flex-col gap-7">
+      <Link
+        href="/parent/messages"
+        className="flex items-center gap-4 rounded-[var(--ptm-radius-lg)] border border-[var(--ptm-accent)]/20 bg-[var(--ptm-card)] p-4 shadow-[var(--ptm-shadow-sm)] transition hover:border-[var(--ptm-accent)]/40"
+      >
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--ptm-accent)]/12 text-[var(--ptm-accent)]">
+          <Sparkles className="h-6 w-6" aria-hidden />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-bold text-[var(--ptm-text)]">{p.homeAiTitle}</span>
+          <span className="mt-0.5 block text-sm text-[var(--ptm-muted)]">{p.homeAiDesc}</span>
+        </span>
+        <span className="shrink-0 rounded-xl bg-[var(--ptm-accent)] px-3 py-2 text-xs font-bold text-white">
+          {p.homeAiCta}
+        </span>
+      </Link>
+
       <section>
         <div className="parent-telemed__featured overflow-hidden rounded-[var(--ptm-radius-lg)] p-4 text-white shadow-[var(--ptm-shadow)] sm:p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-white/80">{tm.featured}</p>
