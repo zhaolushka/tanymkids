@@ -1,0 +1,304 @@
+[
+  {
+    "id": "neuro-7",
+    "number": 1,
+    "title": "7 нейрогимнастика",
+    "description": "Видеомен қадам-қадам қимылдарды қайталап үйренеміз",
+    "emoji": "🧠",
+    "durationMin": 5,
+    "demoVideo": "/demos/finger-gymnastics-7.mp4",
+    "tasks": [
+      {
+        "id": "ready",
+        "title": "Дайын",
+        "instruction": "Екі алақанды көрсет",
+        "emoji": "🖐️",
+        "mode": "both_same",
+        "gesture": "palm",
+        "steps": [
+          "Екі алақан",
+          "Инструкторды қада"
+        ],
+        "holdDurationMs": 2500
+      },
+      {
+        "id": "index-up",
+        "title": "Көрсетші бармақ",
+        "instruction": "Сол қолда тек көрсетші бармақты көтер",
+        "emoji": "",
+        "mode": "both_different",
+        "leftGesture": "index_up",
+        "rightGesture": "palm",
+        "steps": [
+          "Сол — көрсетші",
+          "Оң — алақан"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "peace-palm",
+        "title": "Әрте бармақ",
+        "instruction": "Сол қолда көрсетші мен әрте бармақты көтер",
+        "emoji": "",
+        "mode": "both_different",
+        "leftGesture": "peace",
+        "rightGesture": "palm",
+        "steps": [
+          "Сол — әрте бармақ",
+          "Оң — алақан"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "peace-ring",
+        "title": "әрте + сақина",
+        "instruction": "Сол — әрте бармақ, оң — сақина",
+        "emoji": "",
+        "mode": "both_different",
+        "leftGesture": "peace",
+        "rightGesture": "ring",
+        "steps": [
+          "Сол — әрте",
+          "Оң — сақина (ОК)"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "ring-peace",
+        "title": "Ауыстыр 1",
+        "instruction": "Енді ауыстыр: сол — сақина, оң — әрте",
+        "emoji": "🔄",
+        "mode": "both_different",
+        "leftGesture": "ring",
+        "rightGesture": "peace",
+        "steps": [
+          "Сол — сақина",
+          "Оң — әрте бармақ"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "peace-ring-2",
+        "title": "Ауыстыр 2",
+        "instruction": "Кайта ауыстыр: сол — әрте, оң — сақина",
+        "emoji": "🔄",
+        "mode": "both_different",
+        "leftGesture": "peace",
+        "rightGesture": "ring",
+        "steps": [
+          "Жыл да ауыстыр",
+          "Инструктормен бірге"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "solo-practice",
+        "title": "Өзің!",
+        "instruction": "",
+        "emoji": "💪",
+        "mode": "solo_practice",
+        "soloGestures": ["palm", "index_up", "peace", "ring", "palm"],
+        "steps": [],
+        "holdDurationMs": 2200
+      },
+      {
+        "id": "finish",
+        "title": "Дайын!",
+        "instruction": "",
+        "emoji": "🎉",
+        "mode": "both_same",
+        "gesture": "palm",
+        "steps": [],
+        "holdDurationMs": 2000
+      }
+    ]
+  },
+  {
+    "id": "lesson-2",
+    "number": 2,
+    "title": "2-сабақ: Бастапқы қимылдар",
+    "description": "Екі қолмен қарапайым қимылдар — уақытса қайта ауыстыр",
+    "emoji": "🌱",
+    "durationMin": 5,
+    "tasks": [
+      {
+        "id": "palm-both",
+        "title": "Алақан",
+        "instruction": "Екі алақан көрсет",
+        "emoji": "🖐️",
+        "mode": "both_same",
+        "gesture": "palm",
+        "steps": [
+          "Екі алақан"
+        ],
+        "holdDurationMs": 2500
+      },
+      {
+        "id": "ring-both",
+        "title": "Сақина",
+        "instruction": "Екі қолда сақина",
+        "emoji": "💍",
+        "mode": "both_same",
+        "gesture": "ring",
+        "steps": [
+          "Бас және сонар бірлестір"
+        ],
+        "holdDurationMs": 2500
+      },
+      {
+        "id": "fist-both",
+        "title": "Жумырық",
+        "instruction": "Екі жумырық",
+        "emoji": "✊",
+        "mode": "both_same",
+        "gesture": "fist",
+        "steps": [
+          "Бармақтарды бұк"
+        ],
+        "holdDurationMs": 2500
+      },
+      {
+        "id": "goat-both",
+        "title": "Ешкі",
+        "instruction": "Екі колмен «ешкі»",
+        "emoji": "🐐",
+        "mode": "both_same",
+        "gesture": "goat",
+        "steps": [
+          "Сақина мен шошқа көтер"
+        ],
+        "holdDurationMs": 2500
+      }
+    ]
+  },
+  {
+    "id": "lesson-3",
+    "number": 3,
+    "title": "3-сабақ: Екі қол — бір қиміл",
+    "description": "Сол және оң қолда әртелі қимылдар",
+    "emoji": "🌈",
+    "durationMin": 5,
+    "tasks": [
+      {
+        "id": "peace-ring",
+        "title": "әрте + сақина",
+        "instruction": "Сол — әрте, оң — сақина",
+        "emoji": "",
+        "mode": "both_different",
+        "leftGesture": "peace",
+        "rightGesture": "ring",
+        "steps": [
+          "Сол — әрте",
+          "Оң — сақина"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "goat-palm",
+        "title": "Ешкі + алақан",
+        "instruction": "Сол — ешкі, оң — алақан",
+        "emoji": "🐐",
+        "mode": "both_different",
+        "leftGesture": "goat",
+        "rightGesture": "palm",
+        "steps": [
+          "Сол — ешкі",
+          "Оң — алақан"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "ring-goat",
+        "title": "Ауыстыр",
+        "instruction": "Сол — сақина, оң — ешкі",
+        "emoji": "🔄",
+        "mode": "both_different",
+        "leftGesture": "ring",
+        "rightGesture": "goat",
+        "steps": [
+          "Жыл да ауыстыр"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "index-fist",
+        "title": "Бармақ + жумырық",
+        "instruction": "Сол — көрсетші, оң — жумырық",
+        "emoji": "☝️",
+        "mode": "both_different",
+        "leftGesture": "index_up",
+        "rightGesture": "fist",
+        "steps": [
+          "Сол — көрсетші",
+          "Оң — жумырық"
+        ],
+        "holdDurationMs": 2800
+      }
+    ]
+  },
+  {
+    "id": "lesson-4",
+    "number": 4,
+    "title": "4-сабақ: Кара жаттық",
+    "description": "Жылды қимылдар және ауыстыру — уақытса қайта ауыстыр",
+    "emoji": "⭐",
+    "durationMin": 5,
+    "tasks": [
+      {
+        "id": "peace-goat",
+        "title": "әрте + ешкі",
+        "instruction": "Сол — әрте, оң — ешкі",
+        "emoji": "",
+        "mode": "both_different",
+        "leftGesture": "peace",
+        "rightGesture": "goat",
+        "steps": [
+          "Сол — әрте",
+          "Оң — ешкі"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "fist-palm",
+        "title": "Жумырық + алақан",
+        "instruction": "Сол — жумырық, оң — алақан",
+        "emoji": "✊",
+        "mode": "both_different",
+        "leftGesture": "fist",
+        "rightGesture": "palm",
+        "steps": [
+          "Сол — жумырық",
+          "Оң — алақан"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "goat-ring",
+        "title": "Ешкі + сақина",
+        "instruction": "Сол — ешкі, оң — сақина",
+        "emoji": "🐐",
+        "mode": "both_different",
+        "leftGesture": "goat",
+        "rightGesture": "ring",
+        "steps": [
+          "Сол — ешкі",
+          "Оң — сақина"
+        ],
+        "holdDurationMs": 2800
+      },
+      {
+        "id": "final-mix",
+        "title": "Жалпыяқтымаш",
+        "instruction": "Сол — сақина, оң — әрте бармақ",
+        "emoji": "🏆",
+        "mode": "both_different",
+        "leftGesture": "ring",
+        "rightGesture": "peace",
+        "steps": [
+          "Жарайсын!"
+        ],
+        "holdDurationMs": 2800
+      }
+    ]
+  }
+]

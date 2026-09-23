@@ -1,0 +1,52 @@
+[
+  {
+    "id": "grow_up",
+    "module": "lfk",
+    "title": "Үлкен бол",
+    "instruction": "Қолды жоғары — ағаш сияқты!",
+    "emoji": "🌳",
+    "holdDurationMs": 1800,
+    "difficulty": 1,
+    "steps": ["Тік тұр", "Қолды жоғары", "Ұста"]
+  },
+  {
+    "id": "wings",
+    "module": "lfk",
+    "title": "Қанат",
+    "instruction": "Қолды екі жағаға жай!",
+    "emoji": "🦋",
+    "holdDurationMs": 1800,
+    "difficulty": 1,
+    "steps": ["Тік тұр", "Қанаттарды жай", "Ұста"]
+  },
+  {
+    "id": "airplane",
+    "module": "lfk",
+    "title": "Ұшақ",
+    "instruction": "Бетке бұгу — ұшақ сияқты!",
+    "emoji": "✈️",
+    "holdDurationMs": 1800,
+    "difficulty": 1,
+    "steps": ["Қол белде", "Оңға бұгу", "Солға бұгу"]
+  },
+  {
+    "id": "bow_forward",
+    "module": "lfk",
+    "title": "Иіл",
+    "instruction": "Алға иіл — тізеге!",
+    "emoji": "🍄",
+    "holdDurationMs": 2000,
+    "difficulty": 2,
+    "steps": ["Тік тұр", "Алға иіл", "Тік тұр"]
+  },
+  {
+    "id": "small_big",
+    "module": "lfk",
+    "title": "Кішкентай",
+    "instruction": "Бякау отыр — кішкентай бол!",
+    "emoji": "🐸",
+    "holdDurationMs": 2000,
+    "difficulty": 2,
+    "steps": ["Тік тұр", "Отыр", "Көтер"]
+  }
+]

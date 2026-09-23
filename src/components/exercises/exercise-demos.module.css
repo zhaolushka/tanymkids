@@ -1,0 +1,219 @@
+.demoStage {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 3 / 4;
+  margin: 0 auto;
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, #dbeafe 0%, #fef3c7 100%);
+  overflow: hidden;
+}
+
+.figure {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 180px;
+}
+
+.head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fcd34d;
+  border: 3px solid #2d1b69;
+}
+
+.body {
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 70px;
+  border-radius: 18px;
+  background: #7c3aed;
+  border: 3px solid #2d1b69;
+}
+
+.arm {
+  position: absolute;
+  top: 50px;
+  width: 16px;
+  height: 64px;
+  border-radius: 10px;
+  background: #fcd34d;
+  border: 3px solid #2d1b69;
+  transform-origin: top center;
+}
+
+.armLeft {
+  left: 18px;
+  transform: rotate(12deg);
+}
+
+.armRight {
+  right: 18px;
+  transform: rotate(-12deg);
+}
+
+.leg {
+  position: absolute;
+  top: 108px;
+  width: 18px;
+  height: 72px;
+  border-radius: 10px;
+  background: #38bdf8;
+  border: 3px solid #2d1b69;
+  transform-origin: top center;
+}
+
+.legLeft {
+  left: 34px;
+}
+
+.legRight {
+  right: 34px;
+}
+
+.armsUp .armLeft {
+  animation: armUpLeft 2s ease-in-out infinite;
+}
+
+.armsUp .armRight {
+  animation: armUpRight 2s ease-in-out infinite;
+}
+
+.armsSide .armLeft {
+  animation: armSideLeft 2.5s ease-in-out infinite;
+}
+
+.armsSide .armRight {
+  animation: armSideRight 2.5s ease-in-out infinite;
+}
+
+.forwardBend .figure {
+  animation: forwardBendBody 2.8s ease-in-out infinite;
+}
+
+.sideBend .figure {
+  animation: sideBendBody 3s ease-in-out infinite;
+}
+
+.squat .figure {
+  animation: squatBody 2.5s ease-in-out infinite;
+}
+
+.squat .legLeft,
+.squat .legRight {
+  animation: squatLegs 2.5s ease-in-out infinite;
+}
+
+.balance .legRight {
+  animation: balanceLeg 2.5s ease-in-out infinite;
+}
+
+.handStage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, #ede9fe 0%, #fce7f3 100%);
+}
+
+.handEmoji {
+  font-size: 8rem;
+  line-height: 1;
+}
+
+.goat .handEmoji {
+  animation: goatGesture 2.5s ease-in-out infinite;
+}
+
+.ring .handEmoji {
+  animation: ringGesture 2.5s ease-in-out infinite;
+}
+
+.palmFist .handEmoji {
+  animation: palmFistGesture 2.5s ease-in-out infinite;
+}
+
+.catchShape .handEmoji {
+  animation: catchShapeGesture 2.5s ease-in-out infinite;
+}
+
+@keyframes armUpLeft {
+  0%, 100% { transform: rotate(12deg); }
+  50% { transform: rotate(-145deg); }
+}
+
+@keyframes armUpRight {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(145deg); }
+}
+
+@keyframes armSideLeft {
+  0%, 100% { transform: rotate(12deg); }
+  50% { transform: rotate(88deg); }
+}
+
+@keyframes armSideRight {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(-88deg); }
+}
+
+@keyframes forwardBendBody {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  50% { transform: translateX(-50%) rotate(28deg) translateY(12px); }
+}
+
+@keyframes sideBendBody {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  25% { transform: translateX(-35%) rotate(12deg); }
+  75% { transform: translateX(-65%) rotate(-12deg); }
+}
+
+@keyframes squatBody {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(28px); }
+}
+
+@keyframes squatLegs {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(28deg); }
+}
+
+@keyframes balanceLeg {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-55deg); }
+}
+
+@keyframes goatGesture {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08) rotate(-8deg); }
+}
+
+@keyframes ringGesture {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(8deg) scale(1.05); }
+}
+
+@keyframes palmFistGesture {
+  0%, 45% { content: "🖐️"; }
+  55%, 100% { transform: scale(0.95); }
+}
+
+@keyframes catchShapeGesture {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}

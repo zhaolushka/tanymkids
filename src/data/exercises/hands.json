@@ -1,0 +1,62 @@
+[
+  {
+    "id": "goat",
+    "module": "hands",
+    "title": "Ешкі",
+    "instruction": "Екі қолмен «ешкі» қимылын көрсет!",
+    "emoji": "🐐",
+    "holdDurationMs": 1500,
+    "difficulty": 1,
+    "demoVideo": "/demos/goat.mp4",
+    "steps": [
+      "Екі алақаны камераға көрсет",
+      "Көрсеткіш пен орта бармақтарыңды бұк",
+      "Сақина мен шошқа бармақтарыңды көтер"
+    ]
+  },
+  {
+    "id": "ring",
+    "module": "hands",
+    "title": "Сақина",
+    "instruction": "Екі қолда сақина қимылын жаса!",
+    "emoji": "💍",
+    "holdDurationMs": 1500,
+    "difficulty": 1,
+    "demoVideo": "/demos/ring.mp4",
+    "steps": [
+      "Екі алақаны камераға көрсет",
+      "Бас және сонар бармағын бірлестір",
+      "Қалған бармақтарды түзет"
+    ]
+  },
+  {
+    "id": "palm_fist",
+    "module": "hands",
+    "title": "Алақан-жумырық",
+    "instruction": "Екі қолмен алақан немесе жумырық көрсет!",
+    "emoji": "✊",
+    "holdDurationMs": 1200,
+    "difficulty": 2,
+    "demoVideo": "/demos/palm_fist.mp4",
+    "steps": [
+      "Екі ашық алақан көрсет",
+      "Екі қолды жумырыққа бұк",
+      "Алақан — жумырық — алақан"
+    ]
+  },
+  {
+    "id": "catch_shape",
+    "module": "hands",
+    "title": "Фигураны усың",
+    "instruction": "Қолмен сары рамкадағы фигураны усың!",
+    "emoji": "🔺",
+    "holdDurationMs": 1500,
+    "difficulty": 2,
+    "demoVideo": "/demos/catch_shape.mp4",
+    "steps": [
+      "Ортадағы фигураны қара",
+      "Сонар бармағын рамкаға жақындат",
+      "Қолмен де болады — рамкада усың"
+    ]
+  }
+]

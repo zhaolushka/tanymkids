@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f4ff;
+  --foreground: #2d1b69;
+  --card: #ffffff;
+  --border: #e8dff5;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --secondary: #fbbf24;
+  --secondary-foreground: #2d1b69;
+  --muted-foreground: #6b7280;
+  --kid-purple: #2d1b69;
+  --kid-yellow: #fbbf24;
+  --kid-blue: #38bdf8;
+  --kid-green: #4ade80;
+  --kid-orange: #fb923c;
+  --kid-pink: #f472b6;
+  --shadow-soft: 0 8px 32px rgba(124, 58, 237, 0.12);
+  --shadow-card: 0 4px 24px rgba(45, 27, 105, 0.08);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-kid-purple: var(--kid-purple);
+  --color-kid-yellow: var(--kid-yellow);
+  --color-kid-blue: var(--kid-blue);
+  --color-kid-green: var(--kid-green);
+  --color-kid-orange: var(--kid-orange);
+  --color-kid-pink: var(--kid-pink);
+  --font-sans: var(--font-nunito);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.glass-card {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(12px);
+}
+
+.lesson-card {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(124, 58, 237, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 244, 255, 0.9) 100%);
+  box-shadow: var(--shadow-soft);
+}
+
+.camera-frame {
+  overflow: visible;
+  border-radius: 1.5rem;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.15),
+    0 12px 40px rgba(45, 27, 105, 0.18);
+}
