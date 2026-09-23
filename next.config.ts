@@ -3,13 +3,7 @@ import os from "os";
 
 /** IP этого ПК в LAN — для dev с телефона (Origin / Referer) */
 function collectLanHostnames(): string[] {
-  const hosts = new Set<string>([
-    "192.168.56.1",
-    "192.168.1.1",
-    "192.168.0.1",
-    "172.20.10.4",
-    "172.28.16.1",
-  ]);
+  const hosts = new Set<string>();
 
   const nets = os.networkInterfaces();
   for (const entries of Object.values(nets)) {
@@ -24,8 +18,30 @@ function collectLanHostnames(): string[] {
   return [...hosts];
 }
 
+/** Любой домашний Wi‑Fi / hotspot — dev с телефона по IP */
+const privateLanPatterns = [
+  "192.168.**",
+  "10.**",
+  "172.16.**",
+  "172.17.**",
+  "172.18.**",
+  "172.19.**",
+  "172.20.**",
+  "172.21.**",
+  "172.22.**",
+  "172.23.**",
+  "172.24.**",
+  "172.25.**",
+  "172.26.**",
+  "172.27.**",
+  "172.28.**",
+  "172.29.**",
+  "172.30.**",
+  "172.31.**",
+];
+
 const nextConfig: NextConfig = {
-  allowedDevOrigins: collectLanHostnames(),
+  allowedDevOrigins: [...collectLanHostnames(), ...privateLanPatterns],
 };
 
 export default nextConfig;

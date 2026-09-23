@@ -1,0 +1,58 @@
+[
+  {
+    "id": "dr-ainur-lfk",
+    "handle": "ainur_lfk",
+    "fullName": "Айнур Қасымова",
+    "specialtyId": "lfk",
+    "emoji": "🤸",
+    "city": "Алматы",
+    "bioShort": "Балалар ЛФК — үйде қимыл, posture, оңай жаттығулар.",
+    "qualifications": [
+      { "id": "q1", "title": "ЛФК маманы", "year": 2018 },
+      { "id": "q2", "title": "Педiatric rehab курсы", "year": 2021 }
+    ],
+    "verified": true
+  },
+  {
+    "id": "dr-marat-logoped",
+    "handle": "marat_speech",
+    "fullName": "Марат Бекенов",
+    "specialtyId": "speech",
+    "emoji": "🗣️",
+    "city": "Астана",
+    "bioShort": "Логoped: дыбыс, сөйлеу, саусақ жаттығуларымен байланыс.",
+    "qualifications": [
+      { "id": "q1", "title": "Логoped-дефectolog", "year": 2016 },
+      { "id": "q2", "title": "AR-терапия сертификаты", "year": 2023 }
+    ],
+    "verified": true
+  },
+  {
+    "id": "dr-dana-neuro",
+    "handle": "dana_neuro",
+    "fullName": "Дана Оспанова",
+    "specialtyId": "neuro",
+    "emoji": "🧠",
+    "city": "Шымкент",
+    "bioShort": "Нейропсихолог: назар, мotorika, кognitiv даму.",
+    "qualifications": [
+      { "id": "q1", "title": "Нейропсихolog", "year": 2019 },
+      { "id": "q2", "title": "Sensory integration", "year": 2022 }
+    ],
+    "verified": false
+  },
+  {
+    "id": "dr-erlan-ped",
+    "handle": "erlan_ped",
+    "fullName": "Ерлан Сейітов",
+    "specialtyId": "pediatric",
+    "emoji": "👨‍⚕️",
+    "city": "Қарағанды",
+    "bioShort": "Педиатр: даму мониторингі, ата-аналарға кеңес.",
+    "qualifications": [
+      { "id": "q1", "title": "Пediatrician", "year": 2014 },
+      { "id": "q2", "title": "Development screening", "year": 2020 }
+    ],
+    "verified": true
+  }
+]

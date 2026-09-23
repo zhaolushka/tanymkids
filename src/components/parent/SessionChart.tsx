@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { kk } from "@/i18n/kk";
+import { useI18n } from "@/i18n/LocaleProvider";
 import { getSessions } from "@/lib/analytics/session-recorder";
 
 type ChartPoint = {
@@ -19,13 +19,15 @@ type ChartPoint = {
 };
 
 export function SessionChart() {
+  const { t, locale } = useI18n();
   const [data, setData] = useState<ChartPoint[] | null>(null);
 
   useEffect(() => {
+    const dateLocale = locale === "ru" ? "ru-RU" : "kk-KZ";
     const sessions = getSessions().slice(0, 7).reverse();
     setData(
       sessions.map((s) => ({
-        date: new Date(s.startedAt).toLocaleDateString("kk-KZ", {
+        date: new Date(s.startedAt).toLocaleDateString(dateLocale, {
           day: "numeric",
           month: "short",
         }),
@@ -33,7 +35,7 @@ export function SessionChart() {
         accuracy: Math.round(s.avgAccuracy * 100),
       })),
     );
-  }, []);
+  }, [locale]);
 
   if (data === null) {
     return (
@@ -45,7 +47,7 @@ export function SessionChart() {
   }
 
   if (data.length === 0) {
-    return <p className="text-muted-foreground text-center py-8">{kk.parent.noData}</p>;
+    return <p className="py-8 text-center text-muted-foreground">{t.parent.noData}</p>;
   }
 
   return (
@@ -54,7 +56,7 @@ export function SessionChart() {
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="minutes" fill="#7c3aed" name={kk.parent.minutes} radius={[4, 4, 0, 0]} />
+        <Bar dataKey="minutes" fill="#7c3aed" name={t.parent.minutes} radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

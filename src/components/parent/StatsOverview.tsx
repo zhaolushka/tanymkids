@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BookOpen, Clock, Star, Target, type LucideIcon } from "lucide-react";
 import { Card, CardTitle } from "@/components/ui/card";
-import { kk } from "@/i18n/kk";
+import { useI18n } from "@/i18n/LocaleProvider";
 import { getSessionStats } from "@/lib/analytics/session-recorder";
 
 export function StatsOverview() {
+  const { t } = useI18n();
   const [stats, setStats] = useState({
     totalMinutes: 0,
     avgAccuracy: 0,
@@ -17,18 +19,20 @@ export function StatsOverview() {
     setStats(getSessionStats());
   }, []);
 
-  const items = [
-    { label: kk.parent.sessions, value: stats.sessionCount, emoji: "📚" },
-    { label: kk.parent.minutes, value: stats.totalMinutes, emoji: "⏱️" },
-    { label: kk.parent.accuracy, value: `${Math.round(stats.avgAccuracy * 100)}%`, emoji: "🎯" },
-    { label: kk.parent.stars, value: stats.totalStars, emoji: "⭐" },
+  const items: { label: string; value: string | number; Icon: LucideIcon }[] = [
+    { label: t.parent.sessions, value: stats.sessionCount, Icon: BookOpen },
+    { label: t.parent.minutes, value: stats.totalMinutes, Icon: Clock },
+    { label: t.parent.accuracy, value: `${Math.round(stats.avgAccuracy * 100)}%`, Icon: Target },
+    { label: t.parent.stars, value: stats.totalStars, Icon: Star },
   ];
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item) => (
         <Card key={item.label} className="text-center">
-          <p className="text-3xl mb-2">{item.emoji}</p>
+          <div className="mb-2 flex justify-center text-primary">
+            <item.Icon className="h-8 w-8" aria-hidden />
+          </div>
           <CardTitle>{item.value}</CardTitle>
           <p className="text-sm text-muted-foreground">{item.label}</p>
         </Card>
