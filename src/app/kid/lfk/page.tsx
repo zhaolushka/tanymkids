@@ -13,6 +13,15 @@ export default function LfkListPage() {
         </Link>
       </div>
       <p className="text-lg text-muted-foreground">{kk.lfk.listDesc}</p>
+      <Link href="/kid/lfk/lesson">
+        <Card className="flex items-center gap-4 border-2 border-kid-purple bg-kid-purple/10 transition-transform hover:scale-[1.02] cursor-pointer">
+          <span className="text-5xl">📺</span>
+          <div>
+            <CardTitle>{kk.lfk.lessonStart}</CardTitle>
+            <p className="text-muted-foreground">{kk.lfk.lessonListTitle}</p>
+          </div>
+        </Card>
+      </Link>
       <Link href="/kid/lfk/workout">
         <Card className="flex items-center gap-4 border-2 border-kid-green bg-kid-green/10 transition-transform hover:scale-[1.02] cursor-pointer">
           <span className="text-5xl">▶️</span>

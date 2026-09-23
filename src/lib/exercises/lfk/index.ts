@@ -1,6 +1,7 @@
+import { mirrorLandmarks } from "@/lib/cv/mirror-landmarks";
 import { kk } from "@/i18n/kk";
 import type { EvaluationResult, Landmark } from "@/types/exercise";
-import { LFK_PASS_SCORE, scoreForLfkExercise } from "./lfk-pose-score";
+import { passScoreForLfkExercise, scoreForLfkExercise } from "./lfk-pose-score";
 
 function poseOrNull(landmarks: Landmark[]): Landmark[] | null {
   return landmarks.length >= 33 ? landmarks : null;
@@ -8,6 +9,14 @@ function poseOrNull(landmarks: Landmark[]): Landmark[] | null {
 
 function hintForExercise(exerciseId: string): string {
   switch (exerciseId) {
+    case "neck_turn":
+      return kk.lfk.hints.neckTurn;
+    case "neck_tilt":
+      return kk.lfk.hints.neckTilt;
+    case "forearms_up":
+      return kk.lfk.hints.forearmsUp;
+    case "stand_calm":
+      return kk.lfk.hints.standCalm;
     case "grow_up":
       return kk.lfk.hints.growUp;
     case "wings":
@@ -24,19 +33,21 @@ function hintForExercise(exerciseId: string): string {
 }
 
 function evaluateScored(exerciseId: string, landmarks: Landmark[]): EvaluationResult {
-  const pose = poseOrNull(landmarks);
-  if (!pose) {
+  const raw = poseOrNull(landmarks);
+  if (!raw) {
     return { success: false, accuracy: 0, hint: kk.lfk.hints.standInFrame };
   }
 
+  const pose = mirrorLandmarks(raw);
   const score = scoreForLfkExercise(exerciseId, pose);
+  const pass = passScoreForLfkExercise(exerciseId);
   const accuracy = score / 100;
 
-  if (score >= LFK_PASS_SCORE) {
+  if (score >= pass) {
     return { success: true, accuracy: Math.max(accuracy, 0.55) };
   }
 
-  if (score >= LFK_PASS_SCORE - 12) {
+  if (score >= pass - 10) {
     return {
       success: false,
       accuracy,
@@ -49,6 +60,10 @@ function evaluateScored(exerciseId: string, landmarks: Landmark[]): EvaluationRe
 }
 
 export const lfkEvaluators: Record<string, (landmarks: Landmark[]) => EvaluationResult> = {
+  neck_turn: (l) => evaluateScored("neck_turn", l),
+  neck_tilt: (l) => evaluateScored("neck_tilt", l),
+  forearms_up: (l) => evaluateScored("forearms_up", l),
+  stand_calm: (l) => evaluateScored("stand_calm", l),
   grow_up: (l) => evaluateScored("grow_up", l),
   wings: (l) => evaluateScored("wings", l),
   airplane: (l) => evaluateScored("airplane", l),

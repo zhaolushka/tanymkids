@@ -251,7 +251,22 @@ export function useCamera({
         if (!tracksLive) {
           stopTracks(streamRef.current);
           streamRef.current = null;
-          const stream = await requestVideoStream(facingMode);
+
+          let stream: MediaStream | null = null;
+          let lastErr: unknown;
+          for (let attempt = 0; attempt < 3; attempt++) {
+            if (session !== sessionRef.current) return false;
+            try {
+              stream = await requestVideoStream(facingMode);
+              break;
+            } catch (err) {
+              lastErr = err;
+              if (!isRetryableCameraError(err) || attempt >= 2) throw err;
+              await sleep(350 * (attempt + 1));
+            }
+          }
+          if (!stream) throw lastErr ?? new DOMException("Camera unavailable", "NotReadableError");
+
           if (session !== sessionRef.current) {
             stopTracks(stream);
             return false;

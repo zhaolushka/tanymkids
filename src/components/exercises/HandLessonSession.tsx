@@ -17,6 +17,7 @@ import { TaskFingerBadges } from "@/components/kid/TaskFingerBadges";
 import { soloStepBadges, taskUsesFingerBadges } from "@/lib/lessons/finger-labels";
 import { SuccessAnimation } from "@/components/kid/SuccessAnimation";
 import { Button } from "@/components/ui/button";
+import { KidSkipStepButton } from "@/components/kid/KidSkipStepButton";
 import { useCamera } from "@/hooks/useCamera";
 import { useHandTracking } from "@/hooks/useHandTracking";
 import { useLessonSession } from "@/hooks/useLessonSession";
@@ -79,7 +80,7 @@ export function HandLessonSession({ lesson }: HandLessonSessionProps) {
     setDetecting,
     setWaiting,
     skipCurrentTask,
-  } = useLessonSession({ lesson, active: ready });
+  } = useLessonSession({ lesson, active: sessionStarted && ready });
 
   const ghostGestures = getTaskGhostGestures(currentTask, soloGestureIndex);
   const showOverlay = transitioning || taskJustCompleted;
@@ -274,6 +275,7 @@ export function HandLessonSession({ lesson }: HandLessonSessionProps) {
                 nextTask={nextTaskPreview}
                 taskJustCompleted={taskJustCompleted}
                 transitioning={transitioning}
+                onTapNext={skipCurrentTask}
               />
             )}
           </div>
@@ -352,20 +354,16 @@ export function HandLessonSession({ lesson }: HandLessonSessionProps) {
           {modelLoading && <span className="text-2xl">⏳</span>}
         </div>
 
-        {!showOverlay && !error && (
+        {!error && (
           <>
-            <KidLessonFeedback status={feedbackStatus} />
-            <ProgressBar progress={progress} />
-            <div className="flex justify-center pt-1">
-              <Button
-                type="button"
-                variant="outline"
-                size="default"
-                onClick={skipCurrentTask}
-                aria-label={lessonsKk.skipTask}
-              >
-                ⏭️
-              </Button>
+            {!showOverlay && (
+              <>
+                <KidLessonFeedback status={feedbackStatus} />
+                <ProgressBar progress={progress} />
+              </>
+            )}
+            <div className="flex justify-center pt-2">
+              <KidSkipStepButton onSkip={skipCurrentTask} disabled={lessonComplete} />
             </div>
           </>
         )}

@@ -12,8 +12,11 @@ import type { Lesson, LessonTask } from "@/types/lesson";
 const SUCCESS_FLASH_MS = 500;
 const GAP_BEFORE_NEXT_TASK_MS = 700;
 const SOLO_STEP_FLASH_MS = 450;
-const WRONG_GRACE_MS = 1100;
+const REP_FLASH_MS = 380;
+const WRONG_GRACE_MS = 900;
 const PROGRESS_TICK_MS = 120;
+/** Кадров подряд «дұрыс» прежде чем начать отсчёт удержания */
+const MIN_SUCCESS_FRAMES = 14;
 
 interface UseLessonSessionOptions {
   lesson: Lesson;
@@ -22,6 +25,8 @@ interface UseLessonSessionOptions {
 
 export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
   const [taskIndex, setTaskIndex] = useState(0);
+  const [repIndex, setRepIndex] = useState(0);
+  const [roundIndex, setRoundIndex] = useState(0);
   const [soloGestureIndex, setSoloGestureIndex] = useState(0);
   const [lessonComplete, setLessonComplete] = useState(false);
   const [elapsedSec, setElapsedSec] = useState(0);
@@ -40,18 +45,24 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
   const wrongSinceRef = useRef<number | null>(null);
   const lastProgressUiRef = useRef(0);
   const poseConfirmedRef = useRef(false);
+  const successStreakRef = useRef(0);
+  const repTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const currentTask: LessonTask = lesson.tasks[taskIndex];
   const holdDurationMs = currentTask.holdDurationMs;
   const isSoloTask = currentTask.mode === "solo_practice";
   const soloGestures = currentTask.soloGestures ?? [];
   const soloStepsTotal = soloGestures.length;
+  const repCount = Math.max(1, currentTask.repeatCount ?? 1);
+  const roundCount = Math.max(1, currentTask.demoRounds ?? 1);
+  const useReps = !isSoloTask && (repCount > 1 || roundCount > 1);
 
   const resetHold = useCallback(() => {
     holdStartRef.current = null;
     wrongSinceRef.current = null;
     lastProgressUiRef.current = 0;
     poseConfirmedRef.current = false;
+    successStreakRef.current = 0;
     setProgress(0);
     setPoseConfirmed(false);
   }, []);
@@ -119,6 +130,70 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
     }, SOLO_STEP_FLASH_MS);
   }, [resetHold, soloGestureIndex, soloStepsTotal, startTransition]);
 
+  const clearRepTimeout = useCallback(() => {
+    if (repTimeoutRef.current) {
+      clearTimeout(repTimeoutRef.current);
+      repTimeoutRef.current = null;
+    }
+  }, []);
+
+  const advanceRep = useCallback(() => {
+    if (advancingRef.current) return;
+
+    const earned = starsForAccuracy(1);
+    setTotalStars((value) => value + earned);
+    addStars(earned);
+    setTaskJustCompleted(true);
+    resetHold();
+    clearRepTimeout();
+
+    if (repIndex >= repCount - 1) {
+      if (roundIndex >= roundCount - 1) {
+        repTimeoutRef.current = setTimeout(() => {
+          repTimeoutRef.current = null;
+          setTaskJustCompleted(false);
+          startTransition();
+        }, REP_FLASH_MS);
+        return;
+      }
+
+      repTimeoutRef.current = setTimeout(() => {
+        repTimeoutRef.current = null;
+        setRepIndex(0);
+        setRoundIndex((value) => value + 1);
+        setTaskJustCompleted(false);
+        setFeedbackStatus("detecting");
+      }, REP_FLASH_MS);
+      return;
+    }
+
+    repTimeoutRef.current = setTimeout(() => {
+      repTimeoutRef.current = null;
+      setRepIndex((value) => value + 1);
+      setTaskJustCompleted(false);
+      setFeedbackStatus("detecting");
+    }, REP_FLASH_MS);
+  }, [resetHold, repIndex, repCount, roundIndex, roundCount, startTransition, clearRepTimeout]);
+
+  const skipToNextRep = useCallback(() => {
+    clearRepTimeout();
+    setTaskJustCompleted(false);
+    if (repIndex >= repCount - 1) {
+      if (roundIndex >= roundCount - 1) {
+        startTransition();
+        return;
+      }
+      setRepIndex(0);
+      setRoundIndex((value) => value + 1);
+      resetHold();
+      setFeedbackStatus("detecting");
+      return;
+    }
+    setRepIndex((value) => value + 1);
+    resetHold();
+    setFeedbackStatus("detecting");
+  }, [clearRepTimeout, repIndex, repCount, roundIndex, roundCount, startTransition, resetHold]);
+
   useEffect(() => {
     if (lessonComplete) return;
 
@@ -129,6 +204,8 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
     setPauseCountdown(0);
     setNextTaskPreview(null);
     setSoloGestureIndex(0);
+    setRepIndex(0);
+    setRoundIndex(0);
     setFeedbackStatus("detecting");
     setHint(null);
   }, [taskIndex, lessonComplete, resetHold]);
@@ -139,18 +216,39 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
     return () => clearInterval(timer);
   }, [active, lessonComplete]);
 
+  useEffect(() => () => clearRepTimeout(), [clearRepTimeout]);
+
   const processFrame = useCallback(
     (result: EvaluationResult) => {
       if (!active || lessonComplete || transitioning || taskJustCompleted) return;
 
       if (result.partial) {
-        wrongSinceRef.current = null;
+        successStreakRef.current = 0;
         setFeedbackStatus("almost");
-        setHint(null);
+        setHint(result.hint ?? null);
+
+        const nowPartial = Date.now();
+        if (holdStartRef.current !== null) {
+          if (wrongSinceRef.current === null) wrongSinceRef.current = nowPartial;
+          if (nowPartial - wrongSinceRef.current >= WRONG_GRACE_MS) {
+            resetHold();
+          }
+        } else {
+          wrongSinceRef.current = null;
+        }
         return;
       }
 
       if (result.success) {
+        successStreakRef.current += 1;
+
+        if (successStreakRef.current < MIN_SUCCESS_FRAMES) {
+          wrongSinceRef.current = null;
+          setFeedbackStatus("almost");
+          setHint(null);
+          return;
+        }
+
         wrongSinceRef.current = null;
 
         if (!poseConfirmedRef.current) {
@@ -176,12 +274,16 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
         if (elapsed >= holdDurationMs) {
           if (isSoloTask) {
             advanceSoloStep();
+          } else if (useReps) {
+            advanceRep();
           } else {
             startTransition();
           }
         }
         return;
       }
+
+      successStreakRef.current = 0;
 
       const now = Date.now();
       if (wrongSinceRef.current === null) {
@@ -191,15 +293,15 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
         return;
       }
 
-      if (result.accuracy >= 0.22) {
+      if (result.accuracy >= 0.28) {
         setFeedbackStatus("almost");
-        setHint(null);
+        setHint(result.hint ?? null);
         return;
       }
 
       resetHold();
       setFeedbackStatus("wrong");
-      setHint(null);
+      setHint(result.hint ?? null);
     },
     [
       active,
@@ -208,26 +310,54 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
       taskJustCompleted,
       holdDurationMs,
       isSoloTask,
+      useReps,
       resetHold,
       startTransition,
       advanceSoloStep,
+      advanceRep,
     ],
   );
 
   const skipCurrentTask = useCallback(() => {
-    if (lessonComplete || transitioning || taskJustCompleted) return;
+    if (lessonComplete) return;
+
+    advancingRef.current = false;
+    setTaskJustCompleted(false);
+    setTransitioning(false);
+    setNextTaskPreview(null);
+    setPauseCountdown(0);
+
     if (isSoloTask) {
-      advanceSoloStep();
+      if (soloGestureIndex >= soloStepsTotal - 1) {
+        startTransition();
+      } else {
+        setSoloGestureIndex((value) => value + 1);
+        resetHold();
+        setFeedbackStatus("detecting");
+      }
       return;
     }
-    startTransition();
+
+    if (taskIndex >= lesson.tasks.length - 1) {
+      markLessonComplete(lesson.id);
+      setLessonComplete(true);
+      return;
+    }
+
+    setTaskIndex((value) => value + 1);
+    resetHold();
+    setFeedbackStatus("detecting");
+    setHint(null);
   }, [
     lessonComplete,
-    transitioning,
-    taskJustCompleted,
     isSoloTask,
-    advanceSoloStep,
+    soloGestureIndex,
+    soloStepsTotal,
+    taskIndex,
+    lesson.id,
+    lesson.tasks.length,
     startTransition,
+    resetHold,
   ]);
 
   const setWaiting = useCallback(
@@ -244,14 +374,23 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
     setHint(null);
   }, []);
 
-  const lessonProgress =
-    ((taskIndex + (isSoloTask ? soloGestureIndex / Math.max(1, soloStepsTotal) : progress / 100)) /
-      lesson.tasks.length) *
-    100;
+  const taskUnitProgress = isSoloTask
+    ? soloGestureIndex / Math.max(1, soloStepsTotal)
+    : useReps
+      ? (roundIndex * repCount + repIndex + progress / 100) / (repCount * roundCount)
+      : progress / 100;
 
-  const demoVideoPlaying = isSoloTask
-    ? !lessonComplete
-    : (poseConfirmed || taskJustCompleted || transitioning) && !lessonComplete;
+  const lessonProgress = ((taskIndex + taskUnitProgress) / lesson.tasks.length) * 100;
+
+  const isLfkStyleLesson = lesson.tasks.some((t) => t.mode === "lfk_pose");
+
+  const demoVideoPlaying = lessonComplete
+    ? false
+    : isSoloTask
+      ? true
+      : isLfkStyleLesson
+        ? active
+        : (poseConfirmed || taskJustCompleted || transitioning) && active;
 
   const demoVideoFullLoop = isSoloTask;
 
@@ -261,6 +400,10 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
     taskCount: lesson.tasks.length,
     soloGestureIndex,
     soloStepsTotal,
+    repIndex,
+    repCount,
+    roundIndex,
+    roundCount,
     isSoloTask,
     lessonComplete,
     totalStars,
@@ -281,5 +424,6 @@ export function useLessonSession({ lesson, active }: UseLessonSessionOptions) {
     setDetecting,
     setWaiting,
     skipCurrentTask,
+    skipToNextRep,
   };
 }

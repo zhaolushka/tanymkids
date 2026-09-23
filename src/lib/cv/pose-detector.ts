@@ -35,6 +35,17 @@ async function createLandmarker(
   });
 }
 
+export async function resetPoseLandmarker(): Promise<void> {
+  if (poseLandmarker) {
+    try {
+      poseLandmarker.close();
+    } catch {
+      // already closed
+    }
+    poseLandmarker = null;
+  }
+}
+
 export async function getPoseLandmarker(): Promise<PoseLandmarker> {
   if (poseLandmarker) return poseLandmarker;
 

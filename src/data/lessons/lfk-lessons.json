@@ -1,0 +1,69 @@
+[
+  {
+    "id": "lfk-home-1",
+    "number": 1,
+    "title": "ЛФК — занятие 1",
+    "description": "4 жаттығу — әрқайсысы 2 рет видео, 4 қайталау",
+    "emoji": "🏠",
+    "durationMin": 8,
+    "demoVideo": "/demos/lfk-zanyatie-1.mp4",
+    "tasks": [
+      {
+        "id": "t1-neck-turn",
+        "title": "Бас бұру",
+        "instruction": "Белде қол — бас оңға-солға!",
+        "emoji": "🔄",
+        "mode": "lfk_pose",
+        "lfkExerciseId": "neck_turn",
+        "demoStartSec": 0,
+        "demoEndSec": 22,
+        "steps": ["Қара", "Қайтала"],
+        "holdDurationMs": 1500,
+        "repeatCount": 4,
+        "demoRounds": 2
+      },
+      {
+        "id": "t2-neck-tilt",
+        "title": "Бас еңкейту",
+        "instruction": "Белде қол — бас иыққа!",
+        "emoji": "↔️",
+        "mode": "lfk_pose",
+        "lfkExerciseId": "neck_tilt",
+        "demoStartSec": 22,
+        "demoEndSec": 41,
+        "steps": ["Қара", "Қайтала"],
+        "holdDurationMs": 1500,
+        "repeatCount": 4,
+        "demoRounds": 2
+      },
+      {
+        "id": "t3-forearms",
+        "title": "Билек қимыл",
+        "instruction": "Шынтақты көтер — билекпен қимыл!",
+        "emoji": "💪",
+        "mode": "lfk_pose",
+        "lfkExerciseId": "forearms_up",
+        "demoStartSec": 41,
+        "demoEndSec": 56,
+        "steps": ["Қара", "Қайтала"],
+        "holdDurationMs": 1600,
+        "repeatCount": 4,
+        "demoRounds": 2
+      },
+      {
+        "id": "t4-grow",
+        "title": "Қол жоғары",
+        "instruction": "Екі қолды тік жоғары — ұста!",
+        "emoji": "🌳",
+        "mode": "lfk_pose",
+        "lfkExerciseId": "grow_up",
+        "demoStartSec": 61,
+        "demoEndSec": 76,
+        "steps": ["Қара", "Қайтала"],
+        "holdDurationMs": 1700,
+        "repeatCount": 5,
+        "demoRounds": 2
+      }
+    ]
+  }
+]

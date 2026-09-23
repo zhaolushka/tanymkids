@@ -27,6 +27,17 @@ async function createHandLandmarker(delegate: "GPU" | "CPU"): Promise<HandLandma
   });
 }
 
+export async function resetHandLandmarker(): Promise<void> {
+  if (handLandmarker) {
+    try {
+      handLandmarker.close();
+    } catch {
+      // already closed
+    }
+    handLandmarker = null;
+  }
+}
+
 export async function getHandLandmarker(): Promise<HandLandmarker> {
   if (handLandmarker) return handLandmarker;
 

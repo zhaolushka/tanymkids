@@ -79,9 +79,48 @@ function applyArmsSide(pose: Landmark[]) {
   pose[16] = pt(0.82, 0.36);
 }
 
+function applyHandsOnHips(pose: Landmark[]) {
+  pose[13] = pt(0.34, 0.4);
+  pose[14] = pt(0.66, 0.4);
+  pose[15] = pt(0.38, 0.48);
+  pose[16] = pt(0.62, 0.48);
+}
+
+function applyNeckTurn(pose: Landmark[]) {
+  applyHandsOnHips(pose);
+  pose[0] = pt(0.42, 0.18);
+  pose[3] = pt(0.38, 0.2);
+  pose[4] = pt(0.48, 0.19);
+}
+
+function applyNeckTilt(pose: Landmark[]) {
+  applyHandsOnHips(pose);
+  pose[0] = pt(0.46, 0.2);
+  pose[3] = pt(0.44, 0.22);
+  pose[4] = pt(0.5, 0.17);
+}
+
+function applyForearmsUp(pose: Landmark[]) {
+  pose[13] = pt(0.38, 0.38);
+  pose[14] = pt(0.62, 0.38);
+  pose[15] = pt(0.38, 0.32);
+  pose[16] = pt(0.62, 0.32);
+}
+
 export function getGhostPoseForExercise(exerciseId: string): Landmark[] | null {
   const pose = clonePose(baseStandingPose());
   switch (exerciseId) {
+    case "neck_turn":
+      applyNeckTurn(pose);
+      return pose;
+    case "neck_tilt":
+      applyNeckTilt(pose);
+      return pose;
+    case "forearms_up":
+      applyForearmsUp(pose);
+      return pose;
+    case "stand_calm":
+      return pose;
     case "grow_up":
     case "arms_up":
       applyArmsUp(pose);

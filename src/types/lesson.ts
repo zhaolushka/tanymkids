@@ -6,7 +6,7 @@ export type HandGesture =
   | "peace"
   | "index_up";
 
-export type LessonTaskMode = "both_same" | "both_different" | "solo_practice";
+export type LessonTaskMode = "both_same" | "both_different" | "solo_practice" | "lfk_pose";
 
 export interface LessonTask {
   id: string;
@@ -15,6 +15,10 @@ export interface LessonTask {
   emoji: string;
   /** Сколько миллисекунд удерживать правильный жест, чтобы перейти дальше */
   holdDurationMs: number;
+  /** Сколько раз повторить удержание за один круг видео */
+  repeatCount?: number;
+  /** Сколько раз пройти тот же фрагмент видео (круги) */
+  demoRounds?: number;
   mode: LessonTaskMode;
   gesture?: HandGesture;
   leftGesture?: HandGesture;
@@ -22,6 +26,11 @@ export interface LessonTask {
   /** Тек өзі қайталайтын қимылдар (solo_practice) */
   soloGestures?: HandGesture[];
   steps: string[];
+  /** ЛФК: id жаттығы (grow_up, wings, …) */
+  lfkExerciseId?: string;
+  /** Кадр видео: секунды (нарезанный ролик) */
+  demoStartSec?: number;
+  demoEndSec?: number;
 }
 
 export interface Lesson {

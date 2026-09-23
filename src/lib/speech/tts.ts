@@ -1,6 +1,6 @@
 "use client";
 
-/** Озвучка временно отключена */
+/** Озвучка выключена (браузерный TTS с плохим акцентом) */
 export const SPEECH_ENABLED = false;
 
 let speaking = false;

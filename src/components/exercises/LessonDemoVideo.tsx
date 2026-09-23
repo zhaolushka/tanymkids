@@ -11,6 +11,9 @@ interface LessonDemoVideoProps {
   layout?: "overlay" | "below" | "split";
   /** Бүкіл видео циклмен — «өзің» кезеңі */
   fullLoop?: boolean;
+  /** ЛФК: точный отрезок вместо деления на равные части */
+  segmentStartSec?: number;
+  segmentEndSec?: number;
 }
 
 const DEMO_ASPECT = "608 / 1080";
@@ -20,7 +23,16 @@ function segmentBounds(
   taskIndex: number,
   taskCount: number,
   duration: number,
+  custom?: { start?: number; end?: number },
 ): { start: number; end: number } {
+  if (
+    custom?.start != null &&
+    custom?.end != null &&
+    Number.isFinite(custom.start) &&
+    Number.isFinite(custom.end)
+  ) {
+    return { start: custom.start, end: custom.end };
+  }
   if (taskCount <= 0 || !Number.isFinite(duration)) {
     return { start: 0, end: duration || 0 };
   }
@@ -38,9 +50,13 @@ export function LessonDemoVideo({
   playbackRate,
   layout = "below",
   fullLoop = false,
+  segmentStartSec,
+  segmentEndSec,
 }: LessonDemoVideoProps) {
   const fullLoopRef = useRef(fullLoop);
   fullLoopRef.current = fullLoop;
+  const segmentRef = useRef({ start: segmentStartSec, end: segmentEndSec });
+  segmentRef.current = { start: segmentStartSec, end: segmentEndSec };
   const videoRef = useRef<HTMLVideoElement>(null);
   const playingRef = useRef(playing);
   const taskIndexRef = useRef(taskIndex);
@@ -65,7 +81,12 @@ export function LessonDemoVideo({
         if (playingRef.current) void video.play().catch(() => {});
         return;
       }
-      const { start } = segmentBounds(taskIndex, taskCount, video.duration);
+      const { start } = segmentBounds(
+        taskIndex,
+        taskCount,
+        video.duration,
+        segmentRef.current,
+      );
       if (!Number.isFinite(start)) return;
       if (Math.abs(video.currentTime - start) > 0.2) {
         video.currentTime = start;
@@ -81,7 +102,7 @@ export function LessonDemoVideo({
       video.addEventListener("loadedmetadata", seekToTask, { once: true });
       return () => video.removeEventListener("loadedmetadata", seekToTask);
     }
-  }, [taskIndex, taskCount, src, fullLoop]);
+  }, [taskIndex, taskCount, src, fullLoop, segmentStartSec, segmentEndSec]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -110,6 +131,7 @@ export function LessonDemoVideo({
         taskIndexRef.current,
         taskCountRef.current,
         video.duration,
+        segmentRef.current,
       );
       if (video.currentTime >= end - SEGMENT_LOOP_EPS) {
         video.currentTime = start;
@@ -130,6 +152,7 @@ export function LessonDemoVideo({
         taskIndexRef.current,
         taskCountRef.current,
         video.duration,
+        segmentRef.current,
       );
       video.currentTime = start;
       void video.play().catch(() => {});
