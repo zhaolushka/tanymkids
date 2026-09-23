@@ -6,7 +6,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/i18n/LocaleProvider";
 import { getSessionStats } from "@/lib/analytics/session-recorder";
 
-export function StatsOverview() {
+export function StatsOverview({ telemed }: { telemed?: boolean }) {
   const { t } = useI18n();
   const [stats, setStats] = useState({
     totalMinutes: 0,
@@ -25,6 +25,25 @@ export function StatsOverview() {
     { label: t.parent.accuracy, value: `${Math.round(stats.avgAccuracy * 100)}%`, Icon: Target },
     { label: t.parent.stars, value: stats.totalStars, Icon: Star },
   ];
+
+  if (telemed) {
+    return (
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {items.map((item) => (
+          <div
+            key={item.label}
+            className="rounded-[var(--ptm-radius-md)] bg-[var(--ptm-card)] p-3 text-center shadow-[var(--ptm-shadow-sm)]"
+          >
+            <div className="mb-1 flex justify-center text-[var(--ptm-accent)]">
+              <item.Icon className="h-7 w-7" aria-hidden />
+            </div>
+            <p className="text-lg font-bold text-[var(--ptm-text)]">{item.value}</p>
+            <p className="text-xs text-[var(--ptm-muted)]">{item.label}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,11 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8f4ff;
-  --foreground: #2d1b69;
+  --ptm-bg: #f4f6fb;
+  --ptm-accent: #2f6bff;
+  --ptm-accent-dark: #1f4fd8;
+  --ptm-card: #ffffff;
+  --ptm-text: #1a1d26;
+  --ptm-muted: #8b93a7;
+  --ptm-shadow: 0 8px 32px rgba(26, 29, 38, 0.08);
+  --ptm-shadow-sm: 0 4px 16px rgba(26, 29, 38, 0.06);
+  --background: #f4f6fb;
+  --foreground: #1a1d26;
   --card: #ffffff;
-  --border: #e8dff5;
-  --primary: #7c3aed;
+  --border: #e5e7eb;
+  --primary: #2f6bff;
   --primary-foreground: #ffffff;
   --secondary: #fbbf24;
   --secondary-foreground: #2d1b69;
@@ -67,4 +75,19 @@ body {
   box-shadow:
     0 0 0 1px rgba(124, 58, 237, 0.15),
     0 12px 40px rgba(45, 27, 105, 0.18);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
 }

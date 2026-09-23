@@ -36,5 +36,9 @@ if (recommended.length === 0) {
 
 console.log("  ЛФК с камерой на телефоне: npm run dev:phone → https://<IP>:3000/kid");
 console.log("  На ПК: http://localhost:" + port + "/kid");
-console.log("\n  Если «не открывается»: Windows может блокировать порт — один раз от админа:");
-console.log('  netsh advfirewall firewall add rule name="TanymKids dev 3000" dir=in action=allow protocol=TCP localport=3000\n');
+console.log("\n  ⚠ Не открывается с телефона? Частые причины:");
+console.log("  1) Телефон не в том же Wi‑Fi (не мобильный интернет!)");
+console.log("  2) Брандмауэр Windows — один раз от АДМИНА PowerShell:");
+console.log("     .\\scripts\\allow-dev-port.ps1");
+console.log("  3) localtunnel: только npm run dev:tunnel (порт " + port + ", не 8000!)");
+console.log("     На loca.lt введи пароль = твой внешний IP: https://ifconfig.me\n");

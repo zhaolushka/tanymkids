@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TanymKids — флоу входа (прототип)</title>
+    <style>
+      :root {
+        --accent: #2f6bff;
+        --accent-dark: #1e4fd4;
+        --bg: #f4f6fb;
+        --card: #ffffff;
+        --text: #1a1d26;
+        --muted: #6b7280;
+        --danger: #ef4444;
+        --radius: 20px;
+        --shadow: 0 8px 32px rgba(47, 107, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+        --phone-w: 360px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(160deg, #e8eeff 0%, var(--bg) 45%, #eef1f8 100%);
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        color: var(--text);
+        padding: 24px 16px;
+      }
+
+      .phone {
+        width: var(--phone-w);
+        max-width: 100%;
+        min-height: 640px;
+        background: var(--bg);
+        border-radius: 36px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+        overflow: hidden;
+        position: relative;
+        padding: 12px 12px 20px;
+      }
+
+      .phone-notch {
+        width: 100px;
+        height: 24px;
+        background: #0d0d0d;
+        border-radius: 0 0 14px 14px;
+        margin: 0 auto 8px;
+      }
+
+      .screen {
+        display: none;
+        flex-direction: column;
+        min-height: 580px;
+        padding: 8px 12px 16px;
+        animation: fadeIn 0.25s ease;
+      }
+
+      .screen.active {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-8px);
+        }
+        40%,
+        80% {
+          transform: translateX(8px);
+        }
+      }
+
+      .shake {
+        animation: shake 0.45s ease;
+      }
+
+      .mascot {
+        font-size: 56px;
+        text-align: center;
+        line-height: 1;
+        margin: 8px 0 4px;
+      }
+
+      h1 {
+        font-size: 22px;
+        font-weight: 800;
+        text-align: center;
+        margin: 0;
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        margin: 8px 0 20px;
+        line-height: 1.45;
+      }
+
+      .section-label {
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+
+      .card-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        margin-bottom: 10px;
+        border: 1px solid rgba(47, 107, 255, 0.12);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        text-align: left;
+        transition: transform 0.15s, box-shadow 0.15s;
+      }
+
+      .card-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 36px rgba(47, 107, 255, 0.12);
+      }
+
+      .card-btn:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .card-btn.accent {
+        border-color: rgba(47, 107, 255, 0.35);
+        background: linear-gradient(135deg, rgba(47, 107, 255, 0.06), rgba(47, 107, 255, 0.02));
+      }
+
+      .card-btn.disabled,
+      .card-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        filter: grayscale(0.2);
+      }
+
+      .card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        background: rgba(47, 107, 255, 0.12);
+        flex-shrink: 0;
+      }
+
+      .card-btn.kid-card .card-icon {
+        background: rgba(168, 85, 247, 0.15);
+      }
+
+      .card-title {
+        font-weight: 700;
+        font-size: 15px;
+      }
+
+      .card-desc {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+        line-height: 1.35;
+      }
+
+      .link-bottom {
+        margin-top: auto;
+        text-align: center;
+        padding-top: 16px;
+      }
+
+      .link-bottom a,
+      .link-muted {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-family: inherit;
+      }
+
+      .link-muted {
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .form-card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .form-card label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .form-card input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 14px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(47, 107, 255, 0.35);
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-dark);
+      }
+
+      .btn-ghost {
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .mode-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+      }
+
+      .mode-card {
+        flex: 1;
+        min-height: 140px;
+        border-radius: var(--radius);
+        padding: 20px;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        box-shadow: var(--shadow);
+        transition: transform 0.15s;
+      }
+
+      .mode-card:hover {
+        transform: scale(1.01);
+      }
+
+      .mode-card.parent-mode {
+        background: linear-gradient(145deg, #2f6bff, #1e4fd4);
+        color: #fff;
+      }
+
+      .mode-card.child-mode {
+        background: var(--card);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+      }
+
+      .mode-emoji {
+        font-size: 36px;
+        margin-bottom: 8px;
+      }
+
+      .mode-title {
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .mode-desc {
+        font-size: 12px;
+        margin-top: 6px;
+        opacity: 0.9;
+        line-height: 1.4;
+      }
+
+      .child-mode .mode-desc {
+        color: var(--muted);
+        opacity: 1;
+      }
+
+      /* PIN */
+      .pin-dots {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin: 28px 0 8px;
+      }
+
+      .pin-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid #c5cdd8;
+        background: transparent;
+        transition: all 0.15s;
+      }
+
+      .pin-dot.filled {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .pin-error {
+        text-align: center;
+        color: var(--danger);
+        font-size: 13px;
+        min-height: 20px;
+        margin-bottom: 8px;
+      }
+
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        max-width: 280px;
+        margin: 16px auto 0;
+      }
+
+      .key {
+        aspect-ratio: 1.35;
+        border: none;
+        border-radius: 14px;
+        background: var(--card);
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--text);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+      }
+
+      .key:active {
+        background: #e8ecf4;
+      }
+
+      .key.wide {
+        grid-column: span 1;
+      }
+
+      .key.action {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      /* Stubs: parent / kid / doctor */
+      .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 4px 16px;
+      }
+
+      .app-header h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .lock-parent {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(255, 255, 255, 0.85);
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        opacity: 0.65;
+      }
+
+      .lock-parent:hover {
+        opacity: 1;
+      }
+
+      .stub-panel {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 16px;
+        box-shadow: var(--shadow);
+        margin-bottom: 10px;
+      }
+
+      .stub-panel h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+      }
+
+      .stub-panel p {
+        margin: 0;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .btn-outline {
+        display: block;
+        width: 100%;
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        border: 2px solid var(--accent);
+        background: transparent;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .toast {
+        position: absolute;
+        bottom: 24px;
+        left: 16px;
+        right: 16px;
+        background: #1a1d26;
+        color: #fff;
+        padding: 12px 14px;
+        border-radius: 14px;
+        font-size: 12px;
+        line-height: 1.4;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        z-index: 10;
+      }
+
+      .toast.show {
+        opacity: 1;
+      }
+
+      .badge-demo {
+        text-align: center;
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+
+      .kid-bg {
+        background: linear-gradient(180deg, #e0f2fe 0%, #f8f4ff 50%, #fce7f3 100%);
+        border-radius: 24px;
+        padding: 12px;
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone" id="phone">
+      <div class="phone-notch" aria-hidden="true"></div>
+
+      <!-- 1: Role pick -->
+      <div class="screen active" id="screen-role">
+        <div class="mascot" aria-hidden="true">🐻</div>
+        <h1>Вход</h1>
+        <p class="subtitle">Выберите роль — у каждой свой кабинет</p>
+        <p class="section-label">Кто вы?</p>
+
+        <button type="button" class="card-btn accent" data-go="auth" data-role="parent">
+          <span class="card-icon">👨‍👩‍👧</span>
+          <span>
+            <div class="card-title">Родитель</div>
+            <div class="card-desc">Прогресс ребёнка, врачи, доступы</div>
+          </span>
+        </button>
+
+        <button type="button" class="card-btn" data-go="auth" data-role="doctor">
+          <span class="card-icon">🩺</span>
+          <span>
+            <div class="card-title">Врач</div>
+            <div class="card-desc">Пациенты с вашим доступом</div>
+          </span>
+        </button>
+
+        <button type="button" class="card-btn kid-card disabled" id="btn-child-blocked">
+          <span class="card-icon">🧒</span>
+          <span>
+            <div class="card-title">Ребёнок</div>
+            <div class="card-desc">ЛФК и игры — вместе с родителем</div>
+          </span>
+        </button>
+
+        <div class="link-bottom">
+          <a href="/">← На главную</a>
+        </div>
+      </div>
+
+      <!-- Auth -->
+      <div class="screen" id="screen-auth">
+        <div class="mascot">🐻</div>
+        <h1 id="auth-title">Вход родителя</h1>
+        <p class="subtitle" id="auth-subtitle">Email или телефон и пароль</p>
+
+        <div class="form-card">
+          <label for="auth-email">Email или телефон</label>
+          <input id="auth-email" type="text" placeholder="parent@example.com" autocomplete="username" />
+          <label for="auth-pass">Пароль</label>
+          <input id="auth-pass" type="password" placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" class="btn-primary" id="btn-auth-submit">Войти / Зарегистрироваться</button>
+          <button type="button" class="btn-ghost" data-show="screen-role">← Назад к выбору роли</button>
+        </div>
+        <p class="badge-demo">Демо: любой email и пароль от 4 символов</p>
+      </div>
+
+      <!-- PIN create -->
+      <div class="screen" id="screen-pin-create">
+        <h1>Создайте PIN-код</h1>
+        <p class="subtitle">Понадобится, чтобы переключаться между режимами родителя и ребёнка</p>
+        <div id="pin-create-wrap">
+          <div class="pin-dots" id="dots-create">
+            <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+          </div>
+          <p class="pin-error" id="err-create"></p>
+          <div class="keypad" data-pin-target="create"></div>
+        </div>
+      </div>
+
+      <!-- PIN confirm -->
+      <div class="screen" id="screen-pin-confirm">
+        <h1>Повторите PIN-код</h1>
+        <p class="subtitle">Ещё раз для подтверждения</p>
+        <div id="pin-confirm-wrap">
+          <div class="pin-dots" id="dots-confirm">
+            <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+          </div>
+          <p class="pin-error" id="err-confirm"></p>
+          <div class="keypad" data-pin-target="confirm"></div>
+        </div>
+      </div>
+
+      <!-- Mode pick -->
+      <div class="screen" id="screen-mode">
+        <h1>Кто сейчас пользуется?</h1>
+        <p class="subtitle">Выберите, чтобы продолжить</p>
+        <div class="mode-grid">
+          <button type="button" class="mode-card parent-mode" id="btn-mode-parent">
+            <div class="mode-emoji">👤</div>
+            <div class="mode-title">Родитель</div>
+            <div class="mode-desc">Полный доступ: прогресс, врачи, настройки</div>
+          </button>
+          <button type="button" class="mode-card child-mode" id="btn-mode-child">
+            <div class="mode-emoji">🐻</div>
+            <div class="mode-title">Ребёнок</div>
+            <div class="mode-desc">Игры и упражнения</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- PIN enter (parent mode) -->
+      <div class="screen" id="screen-pin-enter">
+        <h1>Введите PIN-код</h1>
+        <p class="subtitle">Это нужно, чтобы ребёнок не зашёл в родительский раздел</p>
+        <div id="pin-enter-wrap">
+          <div class="pin-dots" id="dots-enter">
+            <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+          </div>
+          <p class="pin-error" id="err-enter"></p>
+          <div class="keypad" data-pin-target="enter"></div>
+        </div>
+        <div class="link-bottom">
+          <button type="button" class="link-muted" id="btn-forgot-pin">Забыли PIN?</button>
+        </div>
+      </div>
+
+      <!-- Parent cabinet stub -->
+      <div class="screen" id="screen-parent">
+        <div class="app-header">
+          <h2>🐻 Кабинет родителя</h2>
+        </div>
+        <div class="stub-panel">
+          <h3>Прогресс Айши</h3>
+          <p>ЛФК, звёзды, streak — как на /parent/home</p>
+        </div>
+        <div class="stub-panel">
+          <h3>Врачи и доступы</h3>
+          <p>Family Access, сеть специалистов</p>
+        </div>
+        <button type="button" class="btn-outline" id="btn-switch-child">Переключиться на детский режим</button>
+        <div class="link-bottom">
+          <button type="button" class="link-muted" data-show="screen-role" id="btn-logout">Выйти из аккаунта</button>
+        </div>
+      </div>
+
+      <!-- Kid stub -->
+      <div class="screen" id="screen-kid">
+        <div class="app-header">
+          <h2>🐻 TanymKids</h2>
+          <button type="button" class="lock-parent" id="btn-i-am-parent" title="Я родитель">🔒</button>
+        </div>
+        <div class="kid-bg">
+          <div class="stub-panel">
+            <h3>ЛФК и игры</h3>
+            <p>Детский интерфейс — /kid. Родитель уже вошёл в аккаунт.</p>
+          </div>
+          <div class="stub-panel">
+            <h3>⭐ Награды</h3>
+            <p>Звёзды и упражнения для ребёнка</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor stub -->
+      <div class="screen" id="screen-doctor">
+        <div class="app-header">
+          <h2>🩺 Кабинет врача</h2>
+        </div>
+        <div class="stub-panel">
+          <h3>Пациенты с доступом</h3>
+          <p>Список детей, которым родитель открыл мед. данные</p>
+        </div>
+        <div class="link-bottom">
+          <button type="button" class="link-muted" data-show="screen-role">Выйти</button>
+        </div>
+      </div>
+
+      <div class="toast" id="toast" role="status"></div>
+    </div>
+
+    <script>
+      const PIN_KEY = "tanym_demo_parent_pin";
+      const LOGGED_KEY = "tanym_demo_logged_role";
+
+      const state = {
+        authRole: null,
+        pinBuffer: { create: "", confirm: "", enter: "" },
+        pendingPin: null,
+        pinEnterSuccess: null,
+      };
+
+      function getStoredPin() {
+        return localStorage.getItem(PIN_KEY);
+      }
+
+      function showScreen(id) {
+        document.querySelectorAll(".screen").forEach((el) => el.classList.remove("active"));
+        const screen = document.getElementById("screen-" + id);
+        if (screen) screen.classList.add("active");
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 3200);
+      }
+
+      function renderDots(target, len) {
+        const wrap = document.getElementById("dots-" + target);
+        if (!wrap) return;
+        wrap.querySelectorAll(".pin-dot").forEach((dot, i) => {
+          dot.classList.toggle("filled", i < len);
+        });
+      }
+
+      function buildKeypads() {
+        document.querySelectorAll(".keypad").forEach((pad) => {
+          const target = pad.dataset.pinTarget;
+          const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "⌫"];
+          pad.innerHTML = "";
+          keys.forEach((k) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "key" + (k === "⌫" ? " action" : k === "" ? " action" : "");
+            btn.textContent = k || "";
+            if (k === "") btn.disabled = true;
+            if (k === "⌫") {
+              btn.addEventListener("click", () => onPinKey(target, "back"));
+            } else if (k) {
+              btn.addEventListener("click", () => onPinKey(target, k));
+            }
+            pad.appendChild(btn);
+          });
+        });
+      }
+
+      function onPinKey(target, key) {
+        let buf = state.pinBuffer[target];
+        if (key === "back") {
+          buf = buf.slice(0, -1);
+        } else if (buf.length < 4) {
+          buf += key;
+        }
+        state.pinBuffer[target] = buf;
+        renderDots(target, buf.length);
+
+        const errEl = document.getElementById("err-" + target);
+        if (errEl) errEl.textContent = "";
+
+        if (buf.length === 4) {
+          setTimeout(() => handlePinComplete(target, buf), 120);
+        }
+      }
+
+      function handlePinComplete(target, pin) {
+        if (target === "create") {
+          state.pendingPin = pin;
+          state.pinBuffer.confirm = "";
+          renderDots("confirm", 0);
+          document.getElementById("err-confirm").textContent = "";
+          showScreen("pin-confirm");
+          state.pinBuffer.create = "";
+          renderDots("create", 0);
+          return;
+        }
+
+        if (target === "confirm") {
+          if (pin !== state.pendingPin) {
+            document.getElementById("err-confirm").textContent = "PIN не совпал — введите заново";
+            const wrap = document.getElementById("pin-confirm-wrap");
+            wrap.classList.add("shake");
+            setTimeout(() => wrap.classList.remove("shake"), 500);
+            state.pinBuffer.confirm = "";
+            renderDots("confirm", 0);
+            setTimeout(() => {
+              state.pendingPin = null;
+              state.pinBuffer.create = "";
+              renderDots("create", 0);
+              document.getElementById("err-create").textContent = "";
+              showScreen("pin-create");
+            }, 900);
+            return;
+          }
+          localStorage.setItem(PIN_KEY, pin);
+          state.pendingPin = null;
+          state.pinBuffer.confirm = "";
+          showScreen("mode");
+          return;
+        }
+
+        if (target === "enter") {
+          const stored = getStoredPin();
+          if (pin !== stored) {
+            document.getElementById("err-enter").textContent = "Неверный PIN, попробуйте снова";
+            const wrap = document.getElementById("pin-enter-wrap");
+            wrap.classList.add("shake");
+            setTimeout(() => wrap.classList.remove("shake"), 500);
+            state.pinBuffer.enter = "";
+            renderDots("enter", 0);
+            return;
+          }
+          state.pinBuffer.enter = "";
+          if (typeof state.pinEnterSuccess === "function") {
+            state.pinEnterSuccess();
+            state.pinEnterSuccess = null;
+          } else {
+            showScreen("parent");
+          }
+        }
+      }
+
+      function afterAuthSuccess() {
+        localStorage.setItem(LOGGED_KEY, state.authRole);
+        if (state.authRole === "doctor") {
+          showScreen("doctor");
+          return;
+        }
+        if (!getStoredPin()) {
+          state.pinBuffer.create = "";
+          renderDots("create", 0);
+          showScreen("pin-create");
+        } else {
+          showScreen("mode");
+        }
+      }
+
+      document.querySelectorAll("[data-go=auth]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.authRole = btn.dataset.role;
+          const isParent = state.authRole === "parent";
+          document.getElementById("auth-title").textContent = isParent ? "Вход родителя" : "Вход врача";
+          document.getElementById("auth-subtitle").textContent = isParent
+            ? "Email или телефон и пароль"
+            : "Аккаунт клиники / личный кабинет врача";
+          showScreen("auth");
+        });
+      });
+
+      document.getElementById("btn-child-blocked").addEventListener("click", () => {
+        showToast("Попросите родителя добавить вас в приложении и открыть детский режим из своего аккаунта.");
+      });
+
+      document.querySelectorAll("[data-show]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-show").replace("screen-", "");
+          if (id === "role") {
+            localStorage.removeItem(LOGGED_KEY);
+            state.authRole = null;
+          }
+          showScreen(id);
+        });
+      });
+
+      document.getElementById("btn-auth-submit").addEventListener("click", () => {
+        const email = document.getElementById("auth-email").value.trim();
+        const pass = document.getElementById("auth-pass").value;
+        if (!email || pass.length < 4) {
+          showToast("Введите email/телефон и пароль (мин. 4 символа)");
+          return;
+        }
+        afterAuthSuccess();
+      });
+
+      document.getElementById("btn-mode-child").addEventListener("click", () => {
+        showScreen("kid");
+      });
+
+      document.getElementById("btn-mode-parent").addEventListener("click", () => {
+        state.pinBuffer.enter = "";
+        renderDots("enter", 0);
+        document.getElementById("err-enter").textContent = "";
+        state.pinEnterSuccess = () => showScreen("parent");
+        showScreen("pin-enter");
+      });
+
+      document.getElementById("btn-switch-child").addEventListener("click", () => {
+        showScreen("mode");
+      });
+
+      document.getElementById("btn-i-am-parent").addEventListener("click", () => {
+        state.pinBuffer.enter = "";
+        renderDots("enter", 0);
+        document.getElementById("err-enter").textContent = "";
+        state.pinEnterSuccess = () => showScreen("parent");
+        showScreen("pin-enter");
+      });
+
+      document.getElementById("btn-forgot-pin").addEventListener("click", () => {
+        showToast("Восстановление PIN по email/SMS — скоро. В демо сбросьте localStorage или создайте PIN заново.");
+      });
+
+      document.getElementById("btn-logout").addEventListener("click", () => {
+        localStorage.removeItem(LOGGED_KEY);
+        state.authRole = null;
+      });
+
+      buildKeypads();
+
+      // Dev helper: ?reset=1 clears demo PIN
+      if (new URLSearchParams(location.search).get("reset") === "1") {
+        localStorage.removeItem(PIN_KEY);
+        localStorage.removeItem(LOGGED_KEY);
+      }
+    </script>
+  </body>
+</html>

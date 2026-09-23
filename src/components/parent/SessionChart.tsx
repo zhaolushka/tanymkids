@@ -18,8 +18,9 @@ type ChartPoint = {
   accuracy: number;
 };
 
-export function SessionChart() {
+export function SessionChart({ telemed }: { telemed?: boolean }) {
   const { t, locale } = useI18n();
+  const barFill = telemed ? "#2f6bff" : "#7c3aed";
   const [data, setData] = useState<ChartPoint[] | null>(null);
 
   useEffect(() => {
@@ -40,14 +41,18 @@ export function SessionChart() {
   if (data === null) {
     return (
       <div
-        className="h-[250px] w-full rounded-xl bg-muted/30"
+        className={`h-[250px] w-full rounded-xl ${telemed ? "bg-[var(--ptm-bg)]" : "bg-muted/30"}`}
         aria-hidden
       />
     );
   }
 
   if (data.length === 0) {
-    return <p className="py-8 text-center text-muted-foreground">{t.parent.noData}</p>;
+    return (
+      <p className={`py-8 text-center ${telemed ? "text-[var(--ptm-muted)]" : "text-muted-foreground"}`}>
+        {t.parent.noData}
+      </p>
+    );
   }
 
   return (
@@ -56,7 +61,7 @@ export function SessionChart() {
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="minutes" fill="#7c3aed" name={t.parent.minutes} radius={[4, 4, 0, 0]} />
+        <Bar dataKey="minutes" fill={barFill} name={t.parent.minutes} radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

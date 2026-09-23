@@ -1,0 +1,25 @@
+.parent-telemed {
+  --ptm-bg: #f4f6fb;
+  --ptm-accent: #2f6bff;
+  --ptm-accent-dark: #1f4fd8;
+  --ptm-card: #ffffff;
+  --ptm-text: #1a1d26;
+  --ptm-muted: #8b93a7;
+  --ptm-shadow: 0 8px 32px rgba(26, 29, 38, 0.08);
+  --ptm-shadow-sm: 0 4px 16px rgba(26, 29, 38, 0.06);
+  --ptm-radius-lg: 24px;
+  --ptm-radius-md: 16px;
+}
+
+.parent-telemed__featured {
+  background: linear-gradient(135deg, var(--ptm-accent) 0%, var(--ptm-accent-dark) 100%);
+}
+
+.parent-telemed__chips-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.parent-telemed__chips-scroll::-webkit-scrollbar {
+  display: none;
+}
