@@ -12,6 +12,7 @@ import {
   Search,
   SlidersHorizontal,
   User,
+  Users,
 } from "lucide-react";
 import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
 import { parentInitials } from "@/components/parent/parent-telemed-ui";
@@ -40,7 +41,8 @@ export function ParentAppShell({
   const isFamilyAccess = pathname === "/parent/family-access";
   const isFocusPage = isDoctorDetail || isFamilyAccess;
   const hideWelcome = isFocusPage;
-  const hideSearch = pathname.startsWith("/parent/settings") || isFocusPage;
+  const isForum = pathname.startsWith("/parent/forum");
+  const hideSearch = pathname.startsWith("/parent/settings") || isFocusPage || isForum;
   const hideMobileNav = isDoctorDetail;
 
   return (
@@ -119,6 +121,12 @@ export function ParentAppShell({
                 active={navActive(pathname, "/parent/messages")}
               />
               <SideLink
+                href="/parent/forum"
+                icon={Users}
+                label={tm.navForum}
+                active={navActive(pathname, "/parent/forum")}
+              />
+              <SideLink
                 href="/parent/network"
                 icon={Plus}
                 label={tm.navNew}
@@ -160,6 +168,12 @@ export function ParentAppShell({
             icon={MessageCircle}
             label={tm.navMessage}
             active={navActive(pathname, "/parent/messages")}
+          />
+          <MobileNav
+            href="/parent/forum"
+            icon={Users}
+            label={tm.navForum}
+            active={navActive(pathname, "/parent/forum")}
           />
           <Link
             href="/parent/network"

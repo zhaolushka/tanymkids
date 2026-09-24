@@ -8,6 +8,7 @@ import {
   ScanLine,
   Stethoscope,
   Sparkles,
+  Users,
   Video,
   type LucideIcon,
 } from "lucide-react";
@@ -73,6 +74,20 @@ export function ParentHomeTelemed() {
         <span className="shrink-0 rounded-xl bg-[var(--ptm-accent)] px-3 py-2 text-xs font-bold text-white">
           {p.homeAiCta}
         </span>
+      </Link>
+
+      <Link
+        href="/parent/forum"
+        className="flex items-center gap-4 rounded-[var(--ptm-radius-lg)] border border-black/5 bg-[var(--ptm-card)] p-4 shadow-[var(--ptm-shadow-sm)]"
+      >
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--ptm-accent)]/12 text-[var(--ptm-accent)]">
+          <Users className="h-6 w-6" aria-hidden />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-bold">{p.forum.homeCardTitle}</span>
+          <span className="mt-0.5 block text-sm text-[var(--ptm-muted)]">{p.forum.homeCardDesc}</span>
+        </span>
+        <span className="shrink-0 text-xs font-bold text-[var(--ptm-accent)]">{p.forum.homeCardCta} →</span>
       </Link>
 
       <section>
