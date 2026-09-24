@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 certificates
+
+# scratch output of scripts/trim-lfk-zanyatie-1.mjs and frame probes
+/public/demos/_lfk_parts/
+/public/demos/_probe/
